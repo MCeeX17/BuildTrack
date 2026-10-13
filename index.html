@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BuildTrack | Site Management by Mo2IT</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f131c">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Chakra+Petch:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0f17;--card:#141a26;--card2:#1b2332;--line:#27314a;--tx:#e8ecf4;--mut:#8b96ad;--or:#f58220;--or2:#d96a0f;--ok:#2fbf71;--bad:#ef5350}
+*{box-sizing:border-box;margin:0}
+body{font-family:Inter,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column}
+h1,h2,h3{font-family:'Chakra Petch',sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+header{position:sticky;top:0;z-index:20;background:#0f131ce6;backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:16px;padding:8px 20px;flex-wrap:wrap}
+header img{height:46px;cursor:pointer}
+nav{display:flex;gap:4px;flex:1;flex-wrap:wrap}
+nav button{background:none;border:0;padding:8px 14px;border-radius:8px;color:var(--mut);cursor:pointer;font-weight:600}
+nav button.on,nav button:hover{background:var(--card2);color:var(--or)}
+main{flex:1;width:100%;max-width:1100px;margin:0 auto;padding:24px 16px}
+footer{border-top:1px solid var(--line);padding:16px;text-align:center;color:var(--mut);font-size:13px}
+footer a{color:var(--or);cursor:pointer;margin:0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.proj{cursor:pointer;transition:.15s}.proj:hover{border-color:var(--or);transform:translateY(-2px)}
+.btn{background:linear-gradient(135deg,var(--or),var(--or2));color:#111;border:0;padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer}
+.btn:hover{filter:brightness(1.1)}.btn.ghost{background:var(--card2);color:var(--tx);border:1px solid var(--line)}
+.btn.red{background:var(--bad);color:#fff}.btn.sm{padding:6px 12px;font-size:13px}
+label{display:block;font-size:12px;font-weight:600;color:var(--mut);margin:12px 0 4px;text-transform:uppercase;letter-spacing:.05em}
+input,select,textarea{width:100%;background:#0d121c;border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+input:focus,select:focus{outline:2px solid var(--or);border-color:transparent}
+input[type=checkbox]{width:auto}
+.row{display:flex;gap:12px;flex-wrap:wrap}.row>*{flex:1;min-width:140px}
+.tag{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:700}
+.t-active{background:#2fbf7122;color:var(--ok)}.t-awaiting_approval{background:#f5822022;color:var(--or)}.t-completed{background:#4f8cff22;color:#7fb0ff}.t-declined{background:#ef535022;color:var(--bad)}
+.muted{color:var(--mut);font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}th{color:var(--mut);font-size:12px;text-transform:uppercase}
+.tabs{display:flex;gap:6px;margin:16px 0;border-bottom:1px solid var(--line);overflow-x:auto}
+.tabs button{background:none;border:0;padding:10px 16px;color:var(--mut);cursor:pointer;font-weight:600;border-bottom:2px solid transparent;white-space:nowrap}
+.tabs button.on{color:var(--or);border-color:var(--or)}
+.dates{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px}
+.dates button{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap;font-size:13px}
+.dates button.on{background:var(--or);color:#111;font-weight:700}.dates button.rec{border-color:var(--ok)}
+.p{color:var(--ok);font-weight:700}.a{color:var(--bad);font-weight:700}
+.modal{position:fixed;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal>div{background:var(--card);border:1px solid var(--or);border-radius:16px;padding:24px;max-width:480px;width:100%;max-height:90vh;overflow:auto}
+.login{max-width:420px;margin:30px auto;text-align:center}.login img{width:240px;max-width:80%}.login form{text-align:left}
+.err{color:var(--bad);font-size:14px;margin-top:10px}
+.toolrow{display:flex;align-items:center;gap:10px;padding:6px 0}.toolrow span{flex:1}.toolrow input[type=number]{width:90px}
+.stat{display:flex;gap:12px;flex-wrap:wrap}.stat>div{flex:1;min-width:110px;background:var(--card2);border-radius:10px;padding:12px;text-align:center}.stat b{display:block;font-size:24px;color:var(--or)}
+details{background:var(--card2);border-radius:10px;padding:10px 14px;border:1px solid var(--line)}summary{cursor:pointer;font-weight:600}
+.page h2{margin:18px 0 8px;color:var(--or)}.page p,.page li{line-height:1.7;color:#c5cde0;margin-bottom:8px}
+.wip{background:#f5822018;border:1px solid var(--or);border-radius:10px;padding:12px;margin:12px 0}
+</style>
+</head>
+<body>
+<header id="hdr"></header>
+<main id="app"></main>
+<footer>© 2026 Mo2IT Incorporation · BuildTrack <span id="ver">(in development)</span><br><a onclick="A.go('about')">About</a>·<a onclick="A.go('privacy')">Privacy</a></footer>
+<div id="modal"></div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,sendPasswordResetEmail,createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getFirestore,collection,doc,setDoc,updateDoc,onSnapshot,query,where,addDoc,getDoc,deleteDoc} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const cfg={apiKey:"AIzaSyDTuLOjhFrqgis1Eq2yd-OeNwoZQzE2dYI",authDomain:"buildtrack-89b32.firebaseapp.com",projectId:"buildtrack-89b32",storageBucket:"buildtrack-89b32.firebasestorage.app",messagingSenderId:"873199396003",appId:"1:873199396003:web:e70a7f9a2d1f0a34574b16",measurementId:"G-RVS4FXWM30"};
+const ADMIN_UID="1I1chNkjsCf09ysvgJE999HgU4I2"; // master admin (boss). Also referenced in firestore.rules
+const fapp=initializeApp(cfg),auth=getAuth(fapp),db=getFirestore(fapp);
+const TOOLS=["Shovels","Pickaxes","Axes","Wheelbarrows","Hammers","Spirit levels","Ladders","Hard hats"];
+const S={user:null,me:null,projects:[],users:[],notes:[],view:"login",pid:null,tab:"register",date:null,draft:[],unsub:[]};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ymd=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const today=()=>ymd(new Date());
+const isBoss=()=>S.me?.role==="boss";
+const P=()=>S.projects.find(p=>p.id===S.pid);
+const nice=s=>new Date(s+"T12:00").toLocaleDateString("en-ZA",{weekday:"short",day:"numeric",month:"short",year:"numeric"});
+const label={active:"Active",awaiting_approval:"Awaiting approval",completed:"Completed",declined:"Declined"};
+function datesFor(p){const out=[],end=p.completion?.date||today();let d=new Date(p.startDate+"T12:00");const e=new Date(end+"T12:00");while(d<=e){out.push(ymd(d));d.setDate(d.getDate()+1)}return out}
+async function note(to,msg,pid){if(to)await addDoc(collection(db,"notifications"),{to,msg,pid:pid||null,read:false,ts:Date.now()})}
+function bosses(){return S.users.filter(u=>u.role==="boss"&&u.id!==S.user.uid).map(u=>u.id).concat(S.user.uid===ADMIN_UID?[]:[ADMIN_UID])}
+
+/* ---------- AUTH ---------- */
+onAuthStateChanged(auth,async u=>{
+  S.unsub.forEach(f=>f());S.unsub=[];
+  if(!u){S.user=S.me=null;S.view="login";return draw()}
+  S.user=u;
+  let snap=await getDoc(doc(db,"users",u.uid));
+  if(!snap.exists()&&u.uid===ADMIN_UID){await setDoc(doc(db,"users",u.uid),{name:"Boss Admin",email:u.email,role:"boss"});snap=await getDoc(doc(db,"users",u.uid))}
+  if(!snap.exists()){await signOut(auth);S.loginErr="Your account is not registered on a BuildTrack company. Ask your boss to add you.";return}
+  S.me={id:u.uid,...snap.data()};S.view="projects";S.loginErr="";
+  const pq=isBoss()?collection(db,"projects"):query(collection(db,"projects"),where("supervisorId","==",u.uid));
+  S.unsub.push(onSnapshot(pq,s=>{S.projects=s.docs.map(d=>({id:d.id,...d.data()}));draw()}));
+  S.unsub.push(onSnapshot(collection(db,"users"),s=>{S.users=s.docs.map(d=>({id:d.id,...d.data()}));draw()}));
+  S.unsub.push(onSnapshot(query(collection(db,"notifications"),where("to","==",u.uid)),s=>{S.notes=s.docs.map(d=>({id:d.id,...d.data()})).filter(n=>!n.read).sort((a,b)=>a.ts-b.ts);popup()}));
+  draw();
+});
+function popup(){const n=S.notes[0];if(!n)return;$("modal").innerHTML=`<div class="modal"><div><h3>🔔 Notification</h3><p style="margin:14px 0">${esc(n.msg)}</p><div class="row"><button class="btn" onclick="A.openNote('${n.id}','${n.pid||""}')">View</button><button class="btn ghost" onclick="A.readNote('${n.id}')">Dismiss</button></div></div></div>`}
+
+/* ---------- RENDER ---------- */
+function draw(){
+  $("hdr").innerHTML=`<img src="logo.png" alt="BuildTrack" onclick="A.go('projects')">`+(S.me?`<nav>
+   <button class="${S.view==='projects'?'on':''}" onclick="A.go('projects')">Projects</button>
+   <button class="${S.view==='new'?'on':''}" onclick="A.go('new')">+ New project</button>
+   <button class="${S.view==='done'?'on':''}" onclick="A.go('done')">Completed</button>
+   ${isBoss()?`<button class="${S.view==='team'?'on':''}" onclick="A.go('team')">Team</button>`:""}
+   </nav><span class="muted">${esc(S.me.name)} · <b style="color:var(--or)">${isBoss()?"Boss":"Supervisor"}</b></span>
+   <button class="btn ghost sm" onclick="A.out()">Log out</button><button class="btn ghost sm" id="inst" style="display:none" onclick="A.install()">Install app</button>`:`<span style="flex:1"></span>`);
+  if(window.__dip&&S.me)$("inst").style.display="";
+  const v=S.view,m=$("app");
+  m.innerHTML=!S.me&&v!=="about"&&v!=="privacy"?vLogin():({projects:vProjects,new:vNew,done:vDone,team:vTeam,detail:vDetail,about:vAbout,privacy:vPrivacy}[v]||vProjects)();
+  if(v==="new")drawDraft();
+}
+function vLogin(){return `<div class="login card"><img src="logo.png"><h2 style="margin:6px 0">Site Management Portal</h2><p class="muted">Boss and supervisor access</p>
+<form onsubmit="return A.login(event)"><label>Email</label><input id="em" type="email" required autocomplete="username"><label>Password</label><input id="pw" type="password" required autocomplete="current-password">
+<div class="err" id="lerr">${esc(S.loginErr||"")}</div><button class="btn" style="width:100%;margin-top:14px">Log in</button></form>
+<p style="margin-top:14px"><a style="color:var(--or);cursor:pointer" onclick="A.reset()">Forgot / reset password?</a></p></div>`}
+
+function vProjects(){
+  const list=S.projects.filter(p=>p.status!=="completed");
+  const pend=isBoss()?list.filter(p=>p.status==="awaiting_approval"):[];
+  return `<h2>Projects</h2><p class="muted">${list.length} open project(s)</p><br>`+
+  (pend.length?`<div class="card" style="border-color:var(--or)"><h3>Awaiting your approval</h3>${pend.map(p=>`<div class="toolrow"><span><b>${esc(p.name)}</b><br><span class="muted">${esc(p.location)} · by ${esc(uname(p.createdBy))}</span></span><button class="btn sm" onclick="A.approve('${p.id}',true)">Approve</button><button class="btn red sm" onclick="A.approve('${p.id}',false)">Decline</button></div>`).join("")}</div>`:"")+
+  (list.length?`<div class="grid">${list.map(card).join("")}</div>`:`<div class="card muted">No open projects yet. Create one with “+ New project”.</div>`)}
+const uname=id=>S.users.find(u=>u.id===id)?.name||"—";
+function card(p){const w=(p.workers||[]).length,t=Object.entries(p.tools||{}).map(([k,v])=>v+" "+k).join(", ");
+ return `<div class="card proj" onclick="A.open('${p.id}')"><span class="tag t-${p.status}">${label[p.status]}</span><h3 style="margin:10px 0 4px">${esc(p.name)}</h3><p class="muted">📍 ${esc(p.location)}<br>Started ${nice(p.startDate)}<br>👷 ${w} worker(s) · Supervisor: ${esc(uname(p.supervisorId))}</p>${p.needsWorkers?`<p class="a" style="margin-top:8px">⚠ Workers still to be added</p>`:""}<p class="muted" style="margin-top:6px">🛠 ${esc(t)||"No tools"}</p></div>`}
+function vDone(){const l=S.projects.filter(p=>p.status==="completed");return `<h2>Completed projects</h2><br>`+(l.length?`<div class="grid">${l.map(p=>card(p).replace("</h3>",`</h3><p class="${p.completion?.outcome==='success'?'p':'a'}">${p.completion?.outcome==='success'?'✔ Successful':'✘ Failed'} · ended ${nice(p.completion.date)}</p>`)).join("")}</div>`:`<div class="card muted">Nothing completed yet.</div>`)}
+
+function vTeam(){const u=S.users;return `<h2>Team</h2><div class="card"><h3>Add employee</h3><p class="muted">They receive an email with a link to set their own password.</p>
+<form onsubmit="return A.addUser(event)"><div class="row"><div><label>Full name</label><input id="un" required></div><div><label>Email</label><input id="ue" type="email" required></div><div><label>Role</label><select id="ur"><option value="supervisor">Supervisor</option><option value="boss">Boss</option></select></div></div><div class="err" id="uerr"></div><button class="btn" style="margin-top:12px">Add &amp; send reset link</button></form></div>
+<div class="card"><table><tr><th>Name</th><th>Email</th><th>Role</th><th></th></tr>${u.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.email)}</td><td>${x.role}</td><td>${x.id===S.user.uid||x.id===ADMIN_UID?"":`<button class="btn ghost sm" onclick="A.sendReset('${esc(x.email)}')">Reset link</button> <button class="btn red sm" onclick="A.delUser('${x.id}')">Remove</button>`}</td></tr>`).join("")}</table>
+<p class="muted" style="margin-top:10px">Master admin UID: ${ADMIN_UID}</p></div>`}
+
+function vNew(){
+  const boss=isBoss(),sups=S.users.filter(u=>u.role==="supervisor");
+  return `<h2>New project</h2><p class="muted">${boss?"Created projects are active straight away.":"Your project will wait for the boss to approve it."}</p><br>
+<form onsubmit="return A.create(event)"><div class="card"><h3>Project details</h3><div class="row"><div><label>Project name</label><input id="pn" required></div><div><label>Location</label><input id="pl" required></div><div><label>Start date</label><input id="pd" type="date" value="${today()}" required></div></div>
+${boss?`<label>Assign to supervisor</label><select id="ps" required><option value="">Select supervisor…</option>${sups.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select>`:""}</div>
+<div class="card"><h3>Tools required</h3><p class="muted">Tick each tool and set how many.</p><details open><summary>Select tools</summary><div id="tl">${TOOLS.map(toolRow).join("")}</div>
+<div class="row" style="margin-top:10px"><input id="ct" placeholder="Other tool…" style="flex:2"><button type="button" class="btn ghost sm" onclick="A.addTool()">Add tool</button></div></details></div>
+<div class="card"><h3>General workers</h3>${boss?`<label>Who adds the workers?</label><select id="wby" onchange="A.wby()"><option value="boss">I will add them now</option><option value="supervisor">Supervisor must add them</option></select>`:`<p class="muted">Add the workers for this site.</p>`}
+<div id="wform"><div class="row"><div><label>Name</label><input id="wn"></div><div><label>ID number</label><input id="wi"></div><div><label>Cellphone</label><input id="wp" type="tel"></div></div><div class="row"><div><label>Nationality</label><input id="wt" value="South African"></div><div><label>Gender</label><select id="wg"><option>Male</option><option>Female</option><option>Other</option></select></div><div style="display:flex;align-items:flex-end"><button type="button" class="btn ghost" style="width:100%" onclick="A.addDraft()">+ Add worker</button></div></div><div id="dw" style="margin-top:12px"></div></div></div>
+<div class="err" id="nerr"></div><button class="btn">${boss?"Confirm & create project":"Submit for approval"}</button></form>`}
+const toolRow=t=>`<div class="toolrow"><input type="checkbox" data-t="${esc(t)}"><span>${esc(t)}</span><input type="number" min="1" value="1" data-q="${esc(t)}"></div>`;
+function drawDraft(){const e=$("dw");if(!e)return;e.innerHTML=S.draft.length?`<table><tr><th>Name</th><th>ID</th><th>Phone</th><th>Nationality</th><th>Gender</th><th></th></tr>${S.draft.map((w,i)=>`<tr><td>${esc(w.name)}</td><td>${esc(w.idNo)}</td><td>${esc(w.phone)}</td><td>${esc(w.nationality)}</td><td>${esc(w.gender)}</td><td><button type="button" class="btn red sm" onclick="A.rmDraft(${i})">✕</button></td></tr>`).join("")}</table>`:`<p class="muted">No workers added yet.</p>`}
+
+function vDetail(){
+  const p=P();if(!p)return `<div class="card muted">Project not found.</div>`;
+  const t=S.tab,done=p.status==="completed";
+  const needs=p.needsWorkers&&!isBoss()&&p.supervisorId===S.user.uid;
+  return `<button class="btn ghost sm" onclick="A.go('projects')">← Back</button>
+<div style="margin-top:14px"><span class="tag t-${p.status}">${label[p.status]}</span><h2>${esc(p.name)}</h2><p class="muted">📍 ${esc(p.location)} · Started ${nice(p.startDate)} · Supervisor ${esc(uname(p.supervisorId))}</p></div>
+${needs?`<div class="wip"><b>New project — you need to add workers.</b> Open the Workers tab to add them.</div>`:""}
+${p.status==="awaiting_approval"?`<div class="wip">Project created, awaiting approval by the boss.${isBoss()?` <button class="btn sm" onclick="A.approve('${p.id}',true)">Approve</button>`:""}</div>`:""}
+<div class="tabs">${[["register","Attendance"],["workers","Employees"],["tools","Tools"]].concat(done?[["summary","Summary"]]:[]).map(([k,l])=>`<button class="${t===k?"on":""}" onclick="A.tab('${k}')">${l}</button>`).join("")}</div>
+${({register:tRegister,workers:tWorkers,tools:tTools,summary:tSummary}[t]||tRegister)(p)}`}
+
+function tRegister(p){
+  const ds=datesFor(p),d=S.date&&ds.includes(S.date)?S.date:today()>ds[ds.length-1]?ds[ds.length-1]:today();S.date=d;
+  const rec=p.attendance||{},ws=(p.workers||[]).filter(w=>(w.addedOn||p.startDate)<=d),r=rec[d]||{},ro=p.status==="completed"||p.status==="awaiting_approval";
+  const present=ws.filter(w=>r[w.id]).length;
+  return `<div class="dates">${ds.slice().reverse().map(x=>`<button class="${x===d?"on":""} ${rec[x]?"rec":""}" onclick="A.date('${x}')">${nice(x)}${x===today()?" (today)":""}</button>`).join("")}</div>
+<p class="muted">Green outline = register saved. Workers only appear from the date they were added.</p>
+<div class="card" style="margin-top:12px"><div class="stat"><div><b>${ws.length}</b>Workers</div><div><b class="p">${present}</b>Present</div><div><b class="a">${ws.length-present}</b>Absent</div></div>
+${ws.length?`<table style="margin-top:14px"><tr><th>Worker</th><th>ID</th><th style="width:90px">Present</th></tr>${ws.map(w=>`<tr><td>${esc(w.name)}</td><td>${esc(w.idNo)}</td><td>${ro||!rec[d]&&d!==today()&&false?`<span class="${r[w.id]?"p":"a"}">${r[w.id]?"✔":"✘"}</span>`:`<input type="checkbox" data-w="${w.id}" ${r[w.id]?"checked":""} style="width:20px;height:20px"> <span class="${r[w.id]?"p":"a"}">${rec[d]?(r[w.id]?"✔":"✘"):""}</span>`}</td></tr>`).join("")}</table>`:`<p class="muted" style="margin-top:14px">No workers on this date.</p>`}
+${!ro&&ws.length?`<button class="btn" style="margin-top:14px" onclick="A.saveAtt()">Save register for ${nice(d)}</button>`:""}</div>
+${p.status==="active"?`<div class="card" style="border-color:var(--or)"><h3>Project completion</h3><p class="muted" style="margin:6px 0 12px">Close the project once work is finished and tools are back.</p><button class="btn" onclick="A.complete()">Complete project</button></div>`:""}`}
+
+function tWorkers(p){const ws=p.workers||[],can=p.status!=="completed";
+  return `<div class="card"><table><tr><th>Name</th><th>ID number</th><th>Cellphone</th><th>Nationality</th><th>Gender</th><th></th></tr>${ws.map(w=>`<tr><td>${esc(w.name)}</td><td>${esc(w.idNo)}</td><td>${esc(w.phone)}</td><td>${esc(w.nationality)}</td><td>${esc(w.gender)}</td><td>${can?`<button class="btn red sm" onclick="A.delW('${w.id}')">Delete</button>`:""}</td></tr>`).join("")||`<tr><td colspan=6 class="muted">No workers yet.</td></tr>`}</table></div>
+${can?`<div class="card"><h3>Add worker</h3><div class="row"><div><label>Name</label><input id="wn"></div><div><label>ID number</label><input id="wi"></div><div><label>Cellphone</label><input id="wp"></div></div><div class="row"><div><label>Nationality</label><input id="wt" value="South African"></div><div><label>Gender</label><select id="wg"><option>Male</option><option>Female</option><option>Other</option></select></div></div><button class="btn" style="margin-top:14px" onclick="A.addW()">Add worker</button></div>`:""}`}
+function tTools(p){return `<div class="card"><table><tr><th>Tool</th><th>Quantity</th></tr>${Object.entries(p.tools||{}).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v}</td></tr>`).join("")||`<tr><td class="muted">No tools</td></tr>`}</table></div>`}
+function tSummary(p){const c=p.completion,ds=datesFor(p).filter(x=>p.attendance?.[x]),ws=p.workers||[];
+ return `<div class="card"><h3 class="${c.outcome==="success"?"p":"a"}">${c.outcome==="success"?"✔ Project completed successfully":"✘ Project failed"}</h3><div class="stat" style="margin-top:12px"><div><b>${nice(p.startDate).split(",")[1]}</b>Started</div><div><b>${nice(c.date).split(",")[1]}</b>Ended</div><div><b>${ds.length}</b>Days recorded</div><div><b>${ws.length}</b>Workers</div></div>
+ ${c.notes?`<p style="margin-top:12px">${esc(c.notes)}</p>`:""}</div>
+<div class="card"><h3>Tools</h3><table><tr><th>Tool</th><th>Issued</th><th>Returned</th></tr>${Object.entries(p.tools||{}).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v}</td><td class="${(c.returned?.[k]??v)==v?"p":"a"}">${c.returned?.[k]??v}</td></tr>`).join("")}</table></div>
+<div class="card"><h3>Attendance</h3><table><tr><th>Worker</th><th>Days present</th><th>Rate</th></tr>${ws.map(w=>{const n=ds.filter(x=>p.attendance[x][w.id]).length;return `<tr><td>${esc(w.name)}</td><td>${n} / ${ds.length}</td><td>${ds.length?Math.round(n/ds.length*100):0}%</td></tr>`}).join("")}</table></div>`}
+
+function vAbout(){return `<div class="page card"><img src="logo.png" style="width:220px"><h2>About BuildTrack</h2><div class="wip">🚧 BuildTrack is currently <b>in the works</b>. Features may change and some parts are still being built.</div>
+<p>BuildTrack is a site management system for construction teams. It keeps track of general workers (ID number, cellphone, nationality and gender), the tools issued to each site, and a dated daily attendance register — so bosses and supervisors always know who was on site and what equipment went out.</p>
+<h2>What it does</h2><ul><li>Create projects with location, start date and tool quantities</li><li>Boss and supervisor roles, with boss approval for supervisor-created projects</li><li>Daily attendance register with a full history from the project start date</li><li>Project completion with tool return check and a success/failed summary</li><li>Installable on PC and mobile as an app</li></ul>
+<h2>Who we are</h2><p>BuildTrack is a production of <b>Mo2IT Incorporation</b>, a registered incorporation.</p><button class="btn ghost" onclick="A.go(S_back())">← Back</button></div>`}
+function vPrivacy(){return `<div class="page card"><h2>Privacy Policy</h2><div class="wip">🚧 BuildTrack is <b>in the works</b>. This policy will be updated as the product develops.</div>
+<p><b>Mo2IT Incorporation</b> is a registered incorporation and the owner and operator of BuildTrack. This policy explains how information is handled.</p>
+<h2>Information we store</h2><ul><li>Boss and supervisor accounts: name, email address and role</li><li>Worker records entered by your company: name, ID number, cellphone, nationality and gender</li><li>Project data: locations, dates, tools and attendance records</li></ul>
+<h2>How it is used</h2><p>Information is used only to run your company's projects and attendance registers. It is not sold to third parties. Data is stored with Google Firebase (Authentication and Firestore) and is visible only to signed-in users of your company according to their role.</p>
+<h2>Personal information of workers</h2><p>Bosses and supervisors are responsible for having the right to capture worker details. We handle this data with reference to South Africa's Protection of Personal Information Act (POPIA). You may request correction or deletion of data through your boss or by contacting Mo2IT.</p>
+<h2>Passwords</h2><p>Passwords are managed by Firebase Authentication and are never visible to us. Password reset links are emailed to the address the boss registered.</p>
+<h2>Changes</h2><p>As BuildTrack is still in development, this policy may change. Continued use means you accept the updated policy.</p><button class="btn ghost" onclick="A.go(S_back())">← Back</button></div>`}
+const S_back=()=>S.me?"projects":"login";
+window.S_back=S_back;
+
+/* ---------- ACTIONS ---------- */
+const A=window.A={
+ go(v){S.view=v;if(v==="new")S.draft=[];draw();scrollTo(0,0)},
+ open(id){S.pid=id;S.view="detail";S.tab="register";S.date=null;draw()},
+ tab(t){S.tab=t;draw()},date(d){S.date=d;draw()},
+ async login(e){e.preventDefault();$("lerr").textContent="";try{await signInWithEmailAndPassword(auth,$("em").value.trim(),$("pw").value)}catch(x){$("lerr").textContent="Login failed. Check your email and password."}return false},
+ async reset(){const em=$("em")?.value.trim()||prompt("Enter your email address:");if(!em)return;try{await sendPasswordResetEmail(auth,em);alert("If that email is registered, a reset link has been sent.")}catch(x){alert("Could not send reset email.")}},
+ out(){signOut(auth)},
+ async readNote(id){await updateDoc(doc(db,"notifications",id),{read:true});$("modal").innerHTML=""},
+ async openNote(id,pid){await A.readNote(id);if(pid&&S.projects.find(p=>p.id===pid))A.open(pid);else A.go("projects")},
+ async addUser(e){e.preventDefault();const em=$("ue").value.trim(),nm=$("un").value.trim(),role=$("ur").value;
+  try{const sec=initializeApp(cfg,"sec"+Date.now()),sa=getAuth(sec);const c=await createUserWithEmailAndPassword(sa,em,crypto.randomUUID()+"Aa1!");await signOut(sa);
+   await setDoc(doc(db,"users",c.user.uid),{name:nm,email:em,role});await sendPasswordResetEmail(auth,em);alert("Employee added. A password reset link was sent to "+em)}
+  catch(x){$("uerr").textContent=x.code==="auth/email-already-in-use"?"That email already has an account.":"Could not add user: "+x.code}return false},
+ async sendReset(em){await sendPasswordResetEmail(auth,em);alert("Reset link sent to "+em)},
+ async delUser(id){if(confirm("Remove this employee's access? (Their login must also be deleted in the Firebase console.)"))await deleteDoc(doc(db,"users",id))},
+ addTool(){const v=$("ct").value.trim();if(!v)return;$("tl").insertAdjacentHTML("beforeend",toolRow(v));$("ct").value=""},
+ wby(){$("wform").style.display=$("wby").value==="boss"?"":"none"},
+ addDraft(){const w=readW();if(!w)return;S.draft.push(w);["wn","wi","wp"].forEach(i=>$(i).value="");drawDraft()},
+ rmDraft(i){S.draft.splice(i,1);drawDraft()},
+ async create(e){e.preventDefault();const boss=isBoss(),by=boss?$("wby").value:"supervisor";
+  const tools={};document.querySelectorAll("[data-t]").forEach(c=>{if(c.checked)tools[c.dataset.t]=Math.max(1,+document.querySelector(`[data-q="${CSS.escape(c.dataset.t)}"]`).value||1)});
+  if(!Object.keys(tools).length)return $("nerr").textContent="Select at least one tool.",false;
+  const wk=by==="boss"?S.draft.map(w=>({...w,addedOn:$("pd").value})):[];
+  if(by==="supervisor"&&!boss)return false;
+  const sup=boss?$("ps").value:S.user.uid;
+  const p={name:$("pn").value.trim(),location:$("pl").value.trim(),startDate:$("pd").value,tools,workers:wk,attendance:{},supervisorId:sup,createdBy:S.user.uid,needsWorkers:boss&&by==="supervisor",status:boss?"active":"awaiting_approval",createdAt:Date.now()};
+  if(!boss&&!wk.length&&!S.draft.length)return $("nerr").textContent="Add at least one worker.",false;
+  if(!boss)p.workers=S.draft.map(w=>({...w,addedOn:p.startDate}));
+  const r=await addDoc(collection(db,"projects"),p);
+  if(boss&&sup!==S.user.uid)await note(sup,p.needsWorkers?`New project “${p.name}” assigned to you. You need to add the general workers.`:`New project “${p.name}” assigned. View it now.`,r.id);
+  if(!boss){for(const b of bosses())await note(b,`${S.me.name} created “${p.name}” — awaiting your approval.`,r.id);alert("Project created, awaiting approval.")}
+  S.draft=[];A.go("projects");return false},
+ async approve(id,ok){const p=S.projects.find(x=>x.id===id);await updateDoc(doc(db,"projects",id),{status:ok?"active":"declined"});await note(p.supervisorId,ok?`“${p.name}” was approved. You may work on the project or continue.`:`“${p.name}” was declined by the boss.`,id)},
+ async addW(){const w=readW();if(!w)return;const p=P();w.addedOn=today()<p.startDate?p.startDate:today();
+  await updateDoc(doc(db,"projects",p.id),{workers:[...(p.workers||[]),w],needsWorkers:false});
+  if(p.needsWorkers&&!isBoss())for(const b of bosses())await note(b,`${S.me.name} added workers to “${p.name}”.`,p.id)},
+ async delW(id){if(!confirm("Delete this worker from the project?"))return;const p=P();await updateDoc(doc(db,"projects",p.id),{workers:p.workers.filter(w=>w.id!==id)})},
+ async saveAtt(){const p=P(),d=S.date,r={};document.querySelectorAll("[data-w]").forEach(c=>r[c.dataset.w]=c.checked);await updateDoc(doc(db,"projects",p.id),{["attendance."+d]:r});alert("Register saved for "+nice(d))},
+ complete(){const p=P();$("modal").innerHTML=`<div class="modal"><div><h3>Complete project</h3><p class="muted" style="margin:8px 0">Are all tools returned? Expected:</p>
+ ${Object.entries(p.tools||{}).map(([k,v])=>`<div class="toolrow"><span><b>${v}</b> ${esc(k)}</span><input type="number" min="0" max="${v}" value="${v}" data-r="${esc(k)}"></div>`).join("")}
+ <label>Outcome</label><select id="oc"><option value="success">Project completed successfully</option><option value="failed">Project failed</option></select>
+ <label>Notes (optional)</label><textarea id="on" rows="2"></textarea><div class="row" style="margin-top:16px"><button class="btn" onclick="A.finish()">Confirm &amp; close project</button><button class="btn ghost" onclick="document.getElementById('modal').innerHTML=''">Cancel</button></div></div></div>`},
+ async finish(){const p=P(),ret={};document.querySelectorAll("[data-r]").forEach(i=>ret[i.dataset.r]=+i.value);
+  const miss=Object.entries(p.tools).filter(([k,v])=>ret[k]<v);if(miss.length&&!confirm("Some tools are not returned: "+miss.map(([k,v])=>`${v-ret[k]} ${k}`).join(", ")+". Close anyway?"))return;
+  await updateDoc(doc(db,"projects",p.id),{status:"completed",completion:{outcome:$("oc").value,date:today(),returned:ret,notes:$("on").value.trim()}});
+  $("modal").innerHTML="";S.tab="summary";draw()},
+ install(){window.__dip?.prompt()}
+};
+function readW(){const n=$("wn").value.trim(),i=$("wi").value.trim();if(!n||!i){alert("Name and ID number are required.");return null}return{id:crypto.randomUUID().slice(0,8),name:n,idNo:i,phone:$("wp").value.trim(),nationality:$("wt").value.trim(),gender:$("wg").value}}
+
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();window.__dip=e;draw()});
+if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+draw();
+</script>
+</body>
+</html>
